@@ -46,13 +46,16 @@
     MapAnnotation * annot =[MapAnnotation new];
     annot.coordinate = coordinate;
     annot.title =@"You clicked here";
-    
+    [_mapView setClearsContextBeforeDrawing:YES];
     [_mapView addAnnotation:annot];
 }
 #pragma mark : LocationManager
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations{
-    printf("didUpdate Location\n");
     CLLocation * location = [locations lastObject];
+    printf("didUpdate Location\n");
+    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude);
+    _mapView.region = MKCoordinateRegionMakeWithDistance(coordinate, 200, 200);
+    _mapView.showsUserLocation = true;
     printf("Lat = %f, Lon = %f\n",location.coordinate.latitude,location.coordinate.longitude);
 }
 @end
